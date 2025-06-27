@@ -1,14 +1,3 @@
-"""
-AI Study Material Generator using LangChain and LangGraph with Groq API
-
-This module creates a comprehensive study material generation system that processes
-a topic through multiple nodes to generate subtopics, key concepts, descriptions,
-summaries, and quizzes.
-
-Requirements:
-pip install langchain langgraph groq python-dotenv
-"""
-
 import os
 import re
 from typing import List, Dict, Any, TypedDict
@@ -21,7 +10,7 @@ from langgraph.checkpoint.memory import MemorySaver
 import json
 import uuid
 
-# Load environment variables
+
 load_dotenv()
 
 class StudyMaterialState(TypedDict):
@@ -73,11 +62,9 @@ class StudyMaterialGenerator:
         """
         import re
         
-        # Convert AIMessage to string if needed
         if hasattr(text, 'content'):
             text = text.content
         
-        # Try to find JSON in the text
         json_match = re.search(r'(\[.*\]|\{.*\})', text, re.DOTALL)
         if json_match:
             json_str = json_match.group(1)
@@ -86,26 +73,21 @@ class StudyMaterialGenerator:
             except json.JSONDecodeError:
                 pass
         
-        # If no JSON found or parsing failed, try the original JsonOutputParser
         try:
             parser = JsonOutputParser()
             return parser.parse(text)
         except Exception as e:
-            print(f"⚠️  JSON parsing failed: {e}")
-            print(f"Raw output: {text[:200]}...")
-            # Return a default structure based on context
+            print(f"JSON parsing failed: {e}")
+            print(f"Raw output: {text[:200]}")
             if isinstance(text, str) and '[' in text:
-                # Likely a list - return empty list
                 return []
             else:
-                # Likely an object - return empty dict
                 return {}
     
     def _build_graph(self) -> StateGraph:
         """Build the LangGraph workflow"""
         workflow = StateGraph(StudyMaterialState)
         
-        # Add nodes
         workflow.add_node("get_topic", self.get_topic)
         workflow.add_node("generate_subtopics", self.generate_subtopics)
         workflow.add_node("generate_key_concepts", self.generate_key_concepts)
@@ -115,7 +97,6 @@ class StudyMaterialGenerator:
         workflow.add_node("process_next_subtopic", self.process_next_subtopic)
         workflow.add_node("finalize_output", self.finalize_output)
         
-        # Define the flow
         workflow.set_entry_point("get_topic")
         workflow.add_edge("get_topic", "generate_subtopics")
         workflow.add_edge("generate_subtopics", "process_next_subtopic")
@@ -124,7 +105,6 @@ class StudyMaterialGenerator:
         workflow.add_edge("generate_description", "generate_summary")
         workflow.add_edge("generate_summary", "generate_quiz")
         
-        # Conditional edge to process next subtopic or finalize
         workflow.add_conditional_edges(
             "generate_quiz",
             self._should_continue,
@@ -151,7 +131,7 @@ class StudyMaterialGenerator:
         if not topic:
             raise ValueError("Topic cannot be empty")
         
-        print(f"📚 Processing topic: {topic}")
+        print(f" Processing topic: {topic}")
         return {
             **state,
             "topic": topic,
@@ -189,7 +169,7 @@ class StudyMaterialGenerator:
         chain = prompt | self.llm | self._safe_json_parser
         subtopics = chain.invoke({"topic": state["topic"]})
         
-        print(f"🔍 Generated {len(subtopics)} subtopics")
+        print(f" Generated {len(subtopics)} subtopics")
         for i, subtopic in enumerate(subtopics, 1):
             print(f"  {i}. {subtopic}")
         
@@ -212,12 +192,12 @@ class StudyMaterialGenerator:
         subtopics = state.get("subtopics", [])
         
         if current_index >= len(subtopics):
-            print(f"⚠️  No more subtopics to process. Index: {current_index}, Total: {len(subtopics)}")
+            print(f"  No more subtopics to process. Index: {current_index}, Total: {len(subtopics)}")
             return state
         
         current_subtopic = subtopics[current_index]
         
-        print(f"\n🎯 Processing subtopic {current_index + 1}/{len(subtopics)}: {current_subtopic}")
+        print(f"\n Processing subtopic {current_index + 1}/{len(subtopics)}: {current_subtopic}")
         
         return {
             **state,
@@ -255,7 +235,7 @@ class StudyMaterialGenerator:
             "subtopic": state["current_subtopic"]
         })
         
-        print(f"  💡 Key concepts: {', '.join(key_concepts)}")
+        print(f"   Key concepts: {', '.join(key_concepts)}")
         
         return {
             **state,
@@ -295,7 +275,7 @@ class StudyMaterialGenerator:
             "key_concepts": ", ".join(state["key_concepts"])
         })
         
-        print(f"  📝 Generated description ({len(description)} characters)")
+        print(f"   Generated description ({len(description)} characters)")
         
         return {
             **state,
@@ -332,7 +312,7 @@ class StudyMaterialGenerator:
             "description": state["description"]
         })
         
-        print(f"  📋 Generated summary ({len(summary)} characters)")
+        print(f"   Generated summary ({len(summary)} characters)")
         
         return {
             **state,
@@ -379,9 +359,8 @@ class StudyMaterialGenerator:
             "description": state["description"]
         })
         
-        print(f"  ❓ Generated quiz with {len(quiz['questions'])} questions")
+        print(f"   Generated quiz with {len(quiz['questions'])} questions")
         
-        # Store the completed subtopic material
         subtopic_material = {
             "subtopic": state["current_subtopic"],
             "key_concepts": state["key_concepts"],
@@ -394,7 +373,7 @@ class StudyMaterialGenerator:
         study_materials.append(subtopic_material)
         
         new_index = state.get("current_subtopic_index", 0) + 1
-        print(f"  ✅ Completed subtopic {new_index}/{len(state.get('subtopics', []))}")
+        print(f"   Completed subtopic {new_index}/{len(state.get('subtopics', []))}")
         
         return {
             **state,
@@ -420,9 +399,8 @@ class StudyMaterialGenerator:
         
         print(f"  🔄 Checking continuation: {current_index}/{total_subtopics} (iteration {iteration_count})")
         
-        # Safety check for infinite loops
         if iteration_count >= max_iterations:
-            print(f"⚠️  Maximum iterations ({max_iterations}) reached. Ending workflow.")
+            print(f"  Maximum iterations ({max_iterations}) reached. Ending workflow.")
             return "end"
         
         if current_index < total_subtopics:
@@ -450,8 +428,8 @@ class StudyMaterialGenerator:
             }
         }
         
-        print(f"\n✅ Study material generation completed!")
-        print(f"📊 Summary: {final_output['generation_summary']['subtopics_covered']} subtopics, "
+        print(f"\n Study material generation completed!")
+        print(f" Summary: {final_output['generation_summary']['subtopics_covered']} subtopics, "
               f"{final_output['generation_summary']['total_key_concepts']} key concepts, "
               f"{final_output['generation_summary']['total_quiz_questions']} quiz questions")
         
@@ -485,7 +463,6 @@ class StudyMaterialGenerator:
             iteration_count=0
         )
         
-        # Run the workflow with increased recursion limit
         config = {
             "configurable": {"thread_id": str(uuid.uuid4())},
             "recursion_limit": 50
@@ -513,27 +490,22 @@ class StudyMaterialGenerator:
 def main():
     """Example usage of the Study Material Generator"""
     try:
-        # Initialize the generator
         generator = StudyMaterialGenerator()
         
-        # Get topic from user
         topic = input("Enter a topic for study material generation: ").strip()
         if not topic:
-            print("❌ Topic cannot be empty!")
+            print(" Topic cannot be empty!")
             return
         
-        print(f"\n🚀 Starting study material generation for: '{topic}'")
+        print(f"\n Starting study material generation for: '{topic}'")
         print("=" * 60)
         
-        # Generate study materials
         study_material = generator.generate_study_material(topic)
         
-        # Save to file
         generator.save_study_material(study_material)
         
-        # Display a summary
         print("\n" + "=" * 60)
-        print("📚 STUDY MATERIAL PREVIEW")
+        print(" STUDY MATERIAL PREVIEW")
         print("=" * 60)
         
         for i, material in enumerate(study_material["study_materials"], 1):
@@ -543,9 +515,9 @@ def main():
             print(f"   Quiz Questions: {len(material['quiz']['questions'])}")
         
     except KeyboardInterrupt:
-        print("\n\n⏹️  Generation stopped by user")
+        print("\n\n  Generation stopped by user")
     except Exception as e:
-        print(f"\n❌ Error: {str(e)}")
+        print(f"\n Error: {str(e)}")
 
 if __name__ == "__main__":
     main()

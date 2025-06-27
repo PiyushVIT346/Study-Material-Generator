@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from backend import StudyMaterialGenerator  # Replace with your actual filename
+from backend import StudyMaterialGenerator
 import os
 import json
 import uuid
@@ -9,7 +9,6 @@ app.secret_key = 'your_secret_key'
 
 generator = StudyMaterialGenerator()
 
-# In-memory store for simplicity (consider Redis or DB for production)
 temp_storage = {}
 
 @app.route('/')
@@ -28,14 +27,12 @@ def generate():
 
     try:
         study_material = generator.generate_study_material(topic)
-
-        # Generate unique ID to store data
         material_id = str(uuid.uuid4())
         temp_storage[material_id] = study_material
 
         return redirect(url_for('result', material_id=material_id))
     except Exception as e:
-        return f"❌ Error generating study material: {str(e)}"
+        return f" Error generating study material: {str(e)}"
 
 @app.route('/result/<material_id>')
 def result(material_id):
