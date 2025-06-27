@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Material Results</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        /* Animated background elements */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            animation: pulse-bg 8s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes pulse-bg {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-icon {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .header-icon i {
+            font-size: 36px;
+            color: white;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .topic-highlight {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #667eea;
+            display: inline-block;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Material Cards */
+        .materials-grid {
+            display: grid;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .material-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .material-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.3);
+        }
+
+        .material-card:nth-child(1) { animation-delay: 0.1s; }
+        .material-card:nth-child(2) { animation-delay: 0.2s; }
+        .material-card:nth-child(3) { animation-delay: 0.3s; }
+        .material-card:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .subtopic-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .subtopic-icon {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .content-section {
+            margin-bottom: 25px;
+        }
+
+        .section-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #667eea;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-content {
+            color: #374151;
+            font-size: 1rem;
+            line-height: 1.6;
+            background: rgba(102, 126, 234, 0.05);
+            padding: 15px 20px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .key-concepts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .concept-tag {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Quiz Section */
+        .quiz-section {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 30px;
+            border: 2px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .quiz-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quiz-title i {
+            color: #667eea;
+            font-size: 1.2rem;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .options-list {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+
+        .option-item {
+            background: #f8fafc;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            border-left: 3px solid #e2e8f0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .option-item:hover {
+            background: #e2e8f0;
+            border-left-color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .correct-answer {
+            background: rgba(34, 197, 94, 0.1);
+            color: #059669;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 10px;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .explanation {
+            background: rgba(59, 130, 246, 0.1);
+            color: #1d4ed8;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-style: normal;
+            line-height: 1.5;
+            border-left: 3px solid #3b82f6;
+        }
+
+        /* Action Button */
+        .action-section {
+            text-align: center;
+            margin-top: 50px;
+            animation: fadeIn 1s ease-out 0.8s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .new-topic-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .new-topic-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .new-topic-btn:hover::before {
+            left: 100%;
+        }
+
+        .new-topic-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .new-topic-btn i {
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .new-topic-btn:hover i {
+            transform: translateX(5px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .main-title {
+                font-size: 2rem;
+            }
+
+            .topic-highlight {
+                font-size: 1rem;
+                padding: 12px 20px;
+            }
+
+            .material-card {
+                padding: 20px;
+            }
+
+            .subtopic-title {
+                font-size: 1.5rem;
+            }
+
+            .new-topic-btn {
+                padding: 16px 30px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-icon {
+                width: 60px;
+                height: 60px;
+            }
+
+            .header-icon i {
+                font-size: 28px;
+            }
+
+            .main-title {
+                font-size: 1.8rem;
+            }
+
+            .material-card {
+                padding: 15px;
+            }
+
+            .key-concepts {
+                justify-content: center;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+
+            .bg-pattern,
+            .new-topic-btn {
+                display: none;
+            }
+
+            .material-card {
+                background: white;
+                box-shadow: none;
+                border: 1px solid #ccc;
+                margin-bottom: 20px;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="header-icon">
+                <i class="fas fa-book-open"></i>
+            </div>
+            <h1 class="main-title">📖 Study Material</h1>
+            <div class="topic-highlight">{{ study_material['topic'] }}</div>
+        </div>
+
+        <div class="materials-grid">
+            {% for material in study_material['study_materials'] %}
+            <div class="material-card">
+                <h2 class="subtopic-title">
+                    <div class="subtopic-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    {{ material.subtopic }}
+                </h2>
+
+                <div class="content-section">
+                    <div class="section-label">
+                        <i class="fas fa-key"></i>
+                        Key Concepts
+                    </div>
+                    <div class="key-concepts">
+                        {% for concept in material.key_concepts %}
+                        <span class="concept-tag">{{ concept }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-label">
+                        <i class="fas fa-info-circle"></i>
+                        Description
+                    </div>
+                    <div class="section-content">
+                        {{ material.description }}
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-label">
+                        <i class="fas fa-clipboard-list"></i>
+                        Summary
+                    </div>
+                    <div class="section-content">
+                        {{ material.summary }}
+                    </div>
+                </div>
+
+                <div class="quiz-section">
+                    <h3 class="quiz-title">
+                        <i class="fas fa-question-circle"></i>
+                        Knowledge Check
+                    </h3>
+                    
+                    {% for q in material.quiz.questions %}
+                    <div class="question-card">
+                        <div class="question-text">{{ q.question }}</div>
+                        
+                        <ul class="options-list">
+                            {% for option in q.options %}
+                            <li class="option-item">{{ option }}</li>
+                            {% endfor %}
+                        </ul>
+                        
+                        <div class="correct-answer">
+                            <i class="fas fa-check-circle"></i>
+                            Correct Answer: {{ q.correct_answer }}
+                        </div>
+                        
+                        <div class="explanation">
+                            <strong>Explanation:</strong> {{ q.explanation }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="action-section">
+            <a href="{{ url_for('get_started') }}" class="new-topic-btn">
+                Generate for Another Topic
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Add interactive quiz functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const options = document.querySelectorAll('.option-item');
+            
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from siblings
+                    const siblings = this.parentNode.querySelectorAll('.option-item');
+                    siblings.forEach(sibling => sibling.classList.remove('selected'));
+                    
+                    // Add active class to clicked option
+                    this.classList.add('selected');
+                    this.style.background = 'rgba(102, 126, 234, 0.1)';
+                    this.style.borderLeftColor = '#667eea';
+                    this.style.transform = 'translateX(5px)';
+                });
+            });
+
+            // Add smooth scrolling for better navigation
+            window.addEventListener('scroll', function() {
+                const cards = document.querySelectorAll('.material-card');
+                const scrollPosition = window.scrollY + window.innerHeight;
+                
+                cards.forEach(card => {
+                    const cardPosition = card.offsetTop;
+                    if (scrollPosition > cardPosition + 100) {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+
+            // Add print functionality
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.key === 'p') {
+                    window.print();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

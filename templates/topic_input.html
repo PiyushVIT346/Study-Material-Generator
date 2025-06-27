@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter Topic - Study Material Generator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background grid */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-move 20s linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float-particle 8s infinite ease-in-out;
+        }
+
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 20%; animation-delay: 2s; }
+        .particle:nth-child(3) { left: 30%; animation-delay: 4s; }
+        .particle:nth-child(4) { left: 40%; animation-delay: 1s; }
+        .particle:nth-child(5) { left: 50%; animation-delay: 3s; }
+        .particle:nth-child(6) { left: 60%; animation-delay: 5s; }
+        .particle:nth-child(7) { left: 70%; animation-delay: 2.5s; }
+        .particle:nth-child(8) { left: 80%; animation-delay: 4.5s; }
+        .particle:nth-child(9) { left: 90%; animation-delay: 1.5s; }
+
+        @keyframes float-particle {
+            0%, 100% { transform: translateY(100vh) scale(0); }
+            10% { transform: translateY(90vh) scale(1); }
+            90% { transform: translateY(-10vh) scale(1); }
+            100% { transform: translateY(-10vh) scale(0); }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 60px 50px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .icon-wrapper {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .icon-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24, #ff6b6b);
+            border-radius: 22px;
+            z-index: -1;
+            animation: rotate-border 3s linear infinite;
+        }
+
+        @keyframes rotate-border {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .icon-wrapper i {
+            font-size: 36px;
+            color: white;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); }
+            60% { transform: translateY(-3px); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            font-weight: 400;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.3s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-container {
+            position: relative;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.6s forwards;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .topic-input {
+            width: 100%;
+            padding: 20px 25px;
+            font-size: 1.1rem;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.8);
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            backdrop-filter: blur(10px);
+        }
+
+        .topic-input:focus {
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 
+                0 0 0 4px rgba(102, 126, 234, 0.1),
+                0 8px 25px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .topic-input::placeholder {
+            color: #94a3b8;
+            font-weight: 400;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .topic-input:focus + .input-icon {
+            color: #5a67d8;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .generate-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .generate-btn:hover::before {
+            left: 100%;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .generate-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .generate-btn .btn-text {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .generate-btn:hover .btn-text {
+            transform: translateX(-5px);
+        }
+
+        .generate-btn .btn-icon {
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .generate-btn:hover .btn-icon {
+            transform: translateX(5px);
+        }
+
+        /* Loading state */
+        .generate-btn.loading {
+            pointer-events: none;
+            background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+        }
+
+        .generate-btn.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .generate-btn.loading .btn-content {
+            opacity: 0;
+        }
+
+        .suggestions {
+            margin-top: 30px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.9s forwards;
+        }
+
+        .suggestions-title {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .suggestion-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .suggestion-tag {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .suggestion-tag:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 30px;
+                margin: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .topic-input {
+                padding: 18px 20px;
+                font-size: 1rem;
+            }
+
+            .generate-btn {
+                padding: 16px 35px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .icon-wrapper {
+                width: 70px;
+                height: 70px;
+            }
+
+            .icon-wrapper i {
+                font-size: 30px;
+            }
+
+            .suggestion-tags {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="container">
+        <div class="icon-wrapper">
+            <i class="fas fa-bullseye"></i>
+        </div>
+        
+        <h1>🎯 Enter Your Topic</h1>
+        <p class="subtitle">What would you like to learn today? Enter any subject and let AI create comprehensive study materials for you.</p>
+        
+        <div class="form-container">
+            <form action="{{ url_for('generate') }}" method="POST" id="topicForm">
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        name="topic" 
+                        placeholder="e.g., Machine Learning, World War II, Photosynthesis..."
+                        required
+                        class="topic-input"
+                        id="topicInput"
+                        autocomplete="off"
+                    >
+                    <i class="fas fa-search input-icon"></i>
+                </div>
+                
+                <button type="submit" class="generate-btn" id="generateBtn">
+                    <span class="btn-content">
+                        <span class="btn-text">Generate Study Material</span>
+                        <i class="fas fa-magic btn-icon"></i>
+                    </span>
+                </button>
+            </form>
+        </div>
+
+        <div class="suggestions">
+            <p class="suggestions-title">Popular Topics:</p>
+            <div class="suggestion-tags">
+                <span class="suggestion-tag" onclick="fillTopic('Artificial Intelligence')">Artificial Intelligence</span>
+                <span class="suggestion-tag" onclick="fillTopic('Quantum Physics')">Quantum Physics</span>
+                <span class="suggestion-tag" onclick="fillTopic('Climate Change')">Climate Change</span>
+                <span class="suggestion-tag" onclick="fillTopic('Renaissance Art')">Renaissance Art</span>
+                <span class="suggestion-tag" onclick="fillTopic('Data Science')">Data Science</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Form submission with loading state
+        document.getElementById('topicForm').addEventListener('submit', function(e) {
+            const btn = document.getElementById('generateBtn');
+            btn.classList.add('loading');
+        });
+
+        // Fill topic from suggestions
+        function fillTopic(topic) {
+            const input = document.getElementById('topicInput');
+            input.value = topic;
+            input.focus();
+            
+            // Add a subtle highlight effect
+            input.style.background = 'rgba(102, 126, 234, 0.1)';
+            setTimeout(() => {
+                input.style.background = 'rgba(255, 255, 255, 0.8)';
+            }, 500);
+        }
+
+        // Enhanced input interactions
+        const topicInput = document.getElementById('topicInput');
+        
+        topicInput.addEventListener('input', function() {
+            if (this.value.length > 0) {
+                this.style.borderColor = '#667eea';
+            } else {
+                this.style.borderColor = 'rgba(102, 126, 234, 0.2)';
+            }
+        });
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                document.getElementById('topicForm').submit();
+            }
+        });
+
+        // Particle animation on input focus
+        topicInput.addEventListener('focus', function() {
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach(particle => {
+                particle.style.animationDuration = '4s';
+            });
+        });
+
+        topicInput.addEventListener('blur', function() {
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach(particle => {
+                particle.style.animationDuration = '8s';
+            });
+        });
+    </script>
+</body>
+</html>
