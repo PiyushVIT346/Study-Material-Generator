@@ -57,28 +57,19 @@ The project provides a simple web interface built with Flask to interact with th
 ```bash
 git clone https://github.com/your-username/ai-study-material-generator.git
 cd ai-study-material-generator
+
 2️⃣ Install Dependencies
-bash
-Copy
-Edit
 pip install -r requirements.txt
+
 3️⃣ Add Environment Variables
 Create a .env file in the project root:
-
-ini
-Copy
-Edit
 GROQ_API_KEY=your_actual_groq_api_key_here
-4️⃣ Run the Application
-bash
-Copy
-Edit
-python app.py
-Open your browser and visit:
 
-cpp
-Copy
-Edit
+4️⃣ Run the Application
+python app.py
+
+Open your browser and visit
+
 http://127.0.0.1:5000
 🖥️ Usage Workflow
 Visit the Home Page for app introduction
