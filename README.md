@@ -1,60 +1,60 @@
-📚 AI Study Material Generator (Flask + LangGraph + Groq)
-This project generates comprehensive AI-powered study materials based on user-entered topics. It uses LangChain, LangGraph, and Groq's LLaMA 3 API to generate:
+# 📚 AI Study Material Generator (Flask + LangGraph + Groq)
 
-✅ Relevant subtopics
-✅ Key concepts for each subtopic
-✅ Descriptive explanations
-✅ Concise summaries
-✅ Multiple-choice quizzes
+This project generates AI-powered, structured study material based on user-entered topics using **LangChain**, **LangGraph**, and **Groq's LLaMA 3 API**. 
 
-The Flask web app provides a simple interface to generate and view these study materials.
+The generated content includes:
+- ✅ Relevant Subtopics  
+- ✅ Key Concepts  
+- ✅ Descriptions  
+- ✅ Summaries  
+- ✅ Multiple-Choice Quizzes  
 
-🚀 Features
-Generate structured study material for any topic
+The project provides a simple web interface built with Flask to interact with the system.
 
-Subtopics, key concepts, descriptions, summaries, and quizzes included
+---
 
-Clean web interface with:
+## 🚀 Features
 
-Home page with project details
+- Generate study material for any academic topic
+- AI-generated subtopics and key concepts
+- Educational descriptions and concise summaries
+- Interactive quiz generation
+- User-friendly web interface
+- Server-side storage to handle large data outputs
 
-Topic input page
+---
 
-Result page with full material display
+## 🛠️ Tech Stack
 
-Server-side storage to handle large data (avoids session size limits)
+- **Python 3.8+**
+- **Flask** - Web Application
+- **LangChain** & **LangGraph** - Workflow orchestration
+- **Groq API** - LLaMA 3 based AI content generation
+- **HTML/Jinja2** - Frontend templates
 
-Uses powerful LLM via Groq API for content generation
+---
 
-🛠️ Tech Stack
-Python 3.8+
+## 📂 Project Structure
 
-Flask (Web app framework)
+├── app.py # Flask application
+├── your_module_file.py # StudyMaterialGenerator logic (replace with your filename)
+├── templates/ # HTML templates
+│ ├── home.html
+│ ├── topic_input.html
+│ └── result.html
+├── .env # Environment variables (Groq API Key)
+├── requirements.txt # Python dependencies
+└── README.md # Project documentation
 
-LangChain + LangGraph (Workflow orchestration)
 
-Groq API (LLaMA 3 based language generation)
 
-HTML/CSS (Jinja2) for templating
+---
 
-📂 Project Structure
-bash
-Copy
-Edit
-├── app.py                  # Flask application
-├── your_module_file.py     # StudyMaterialGenerator class (replace with actual filename)
-├── templates/              # HTML templates
-│   ├── home.html
-│   ├── topic_input.html
-│   └── result.html
-├── .env                    # Groq API Key (Do not share publicly)
-├── requirements.txt        # Required dependencies
-└── README.md
-🔧 Setup Instructions
-1️⃣ Clone the Repository
-bash
-Copy
-Edit
+## 🔧 Setup Instructions
+
+### 1️⃣ Clone the Repository
+
+```bash
 git clone https://github.com/your-username/ai-study-material-generator.git
 cd ai-study-material-generator
 2️⃣ Install Dependencies
@@ -62,7 +62,7 @@ bash
 Copy
 Edit
 pip install -r requirements.txt
-3️⃣ Configure Environment Variables
+3️⃣ Add Environment Variables
 Create a .env file in the project root:
 
 ini
@@ -74,34 +74,19 @@ bash
 Copy
 Edit
 python app.py
-Visit http://127.0.0.1:5000 in your browser.
+Open your browser and visit:
 
+cpp
+Copy
+Edit
+http://127.0.0.1:5000
 🖥️ Usage Workflow
-Home page explains the project
+Visit the Home Page for app introduction
 
 Click Get Started
 
 Enter your desired topic
 
-Wait while AI generates study materials
+The system generates subtopics, key concepts, descriptions, summaries, and quizzes
 
-View subtopics, key concepts, descriptions, summaries, and quizzes
-
-⚡ Example
-Input Topic: Machine Learning
-Output: Subtopics like Supervised Learning, Unsupervised Learning, each with key concepts, detailed descriptions, concise summaries, and interactive quizzes.
-
-📦 Requirements
-Python 3.8+
-
-Groq API Access
-
-Internet connection for LLM API calls
-
-🛡️ Important Notes
-The project uses in-memory storage for temporary data. Restarting the server clears stored materials.
-
-For production, integrate a database or Redis for persistent storage.
-
-Keep your .env file secure and never expose your API keys publicly.
-
+View and interact with the generated study material
