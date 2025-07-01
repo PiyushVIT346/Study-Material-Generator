@@ -1,0 +1,6 @@
+flask
+langchain>=0.2.0
+langchain-groq>=0.1.2
+python-dotenv
+gunicorn
+uuid
