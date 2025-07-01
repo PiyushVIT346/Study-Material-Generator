@@ -264,6 +264,8 @@ class StudyMaterialGenerator:
         - Include examples where relevant
         - Make it accessible to students
         - Cover all the key concepts naturally
+        - Try to also include formula if subtopic is related to math or science.
+        - Try to include code lines also if subtopic is related to programming.
         
         Return only the description text, no additional formatting.
         """)
@@ -397,7 +399,7 @@ class StudyMaterialGenerator:
         iteration_count = state.get("iteration_count", 0)
         max_iterations = state.get("max_iterations", 50)
         
-        print(f"  🔄 Checking continuation: {current_index}/{total_subtopics} (iteration {iteration_count})")
+        print(f"   Checking continuation: {current_index}/{total_subtopics} (iteration {iteration_count})")
         
         if iteration_count >= max_iterations:
             print(f"  Maximum iterations ({max_iterations}) reached. Ending workflow.")
