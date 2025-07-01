@@ -4,3 +4,4 @@ langchain-groq>=0.1.2
 python-dotenv
 gunicorn
 uuid
+langgraph
