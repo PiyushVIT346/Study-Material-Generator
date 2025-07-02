@@ -537,25 +537,19 @@
     </div>
 
     <script>
-        // Add interactive quiz functionality
         document.addEventListener('DOMContentLoaded', function() {
             const options = document.querySelectorAll('.option-item');
             
             options.forEach(option => {
                 option.addEventListener('click', function() {
-                    // Remove active class from siblings
                     const siblings = this.parentNode.querySelectorAll('.option-item');
                     siblings.forEach(sibling => sibling.classList.remove('selected'));
-                    
-                    // Add active class to clicked option
                     this.classList.add('selected');
                     this.style.background = 'rgba(102, 126, 234, 0.1)';
                     this.style.borderLeftColor = '#667eea';
                     this.style.transform = 'translateX(5px)';
                 });
             });
-
-            // Add smooth scrolling for better navigation
             window.addEventListener('scroll', function() {
                 const cards = document.querySelectorAll('.material-card');
                 const scrollPosition = window.scrollY + window.innerHeight;
@@ -568,8 +562,6 @@
                     }
                 });
             });
-
-            // Add print functionality
             document.addEventListener('keydown', function(e) {
                 if (e.ctrlKey && e.key === 'p') {
                     window.print();

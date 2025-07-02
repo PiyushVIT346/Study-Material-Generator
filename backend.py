@@ -487,7 +487,7 @@ class StudyMaterialGenerator:
         with open(filename, 'w', encoding='utf-8') as f:
             json.dump(study_material, f, indent=2, ensure_ascii=False)
         
-        print(f"💾 Study material saved to: {filename}")
+        print(f" Study material saved to: {filename}")
 
 def main():
     """Example usage of the Study Material Generator"""

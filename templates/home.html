@@ -322,16 +322,12 @@
     </div>
 
     <script>
-        // Add some interactive animations
         document.addEventListener('DOMContentLoaded', function() {
             const container = document.querySelector('.container');
             const features = document.querySelectorAll('.feature');
-            
-            // Stagger animation for features
             features.forEach((feature, index) => {
                 feature.style.opacity = '0';
                 feature.style.transform = 'translateY(20px)';
-                
                 setTimeout(() => {
                     feature.style.transition = 'all 0.6s ease';
                     feature.style.opacity = '1';
@@ -339,7 +335,6 @@
                 }, 200 * index);
             });
 
-            // Add parallax effect to background shapes
             document.addEventListener('mousemove', function(e) {
                 const shapes = document.querySelectorAll('.shape');
                 const x = e.clientX / window.innerWidth;

@@ -422,7 +422,7 @@
             <i class="fas fa-bullseye"></i>
         </div>
         
-        <h1>🎯 Enter Your Topic</h1>
+        <h1> Enter Your Topic</h1>
         <p class="subtitle">What would you like to learn today? Enter any subject and let AI create comprehensive study materials for you.</p>
         
         <div class="form-container">
@@ -455,33 +455,27 @@
                 <span class="suggestion-tag" onclick="fillTopic('Artificial Intelligence')">Artificial Intelligence</span>
                 <span class="suggestion-tag" onclick="fillTopic('Quantum Physics')">Quantum Physics</span>
                 <span class="suggestion-tag" onclick="fillTopic('Climate Change')">Climate Change</span>
-                <span class="suggestion-tag" onclick="fillTopic('Renaissance Art')">Renaissance Art</span>
+                <span class="suggestion-tag" onclick="fillTopic('Renaissance Art')">World History</span>
                 <span class="suggestion-tag" onclick="fillTopic('Data Science')">Data Science</span>
             </div>
         </div>
     </div>
 
     <script>
-        // Form submission with loading state
         document.getElementById('topicForm').addEventListener('submit', function(e) {
             const btn = document.getElementById('generateBtn');
             btn.classList.add('loading');
         });
 
-        // Fill topic from suggestions
         function fillTopic(topic) {
             const input = document.getElementById('topicInput');
             input.value = topic;
             input.focus();
-            
-            // Add a subtle highlight effect
             input.style.background = 'rgba(102, 126, 234, 0.1)';
             setTimeout(() => {
                 input.style.background = 'rgba(255, 255, 255, 0.8)';
             }, 500);
         }
-
-        // Enhanced input interactions
         const topicInput = document.getElementById('topicInput');
         
         topicInput.addEventListener('input', function() {
@@ -491,15 +485,12 @@
                 this.style.borderColor = 'rgba(102, 126, 234, 0.2)';
             }
         });
-
-        // Add keyboard shortcuts
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && e.ctrlKey) {
                 document.getElementById('topicForm').submit();
             }
         });
 
-        // Particle animation on input focus
         topicInput.addEventListener('focus', function() {
             const particles = document.querySelectorAll('.particle');
             particles.forEach(particle => {

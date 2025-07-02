@@ -8,7 +8,6 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
 generator = StudyMaterialGenerator()
-
 temp_storage = {}
 
 @app.route('/')
@@ -43,5 +42,5 @@ def result(material_id):
     return render_template('result.html', study_material=study_material)
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))  # Render provides PORT env variable
+    port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=True)
